@@ -1,15 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useIndexedPools } from "@/hooks/indexer/useIndexedPools";
-import { formatAmount, formatWadPercent, shortenAddress, formatDate } from "@/lib/utils";
-
-const statusColor: Record<string, string> = {
-  Active: "bg-green-500/20 text-green-400",
-  Triggered: "bg-red-500/20 text-red-400",
-  Settled: "bg-[var(--accent)]/15 text-[var(--accent)]",
-  Expired: "bg-zinc-500/20 text-zinc-400",
-};
+import { PoolCard } from "@/components/pools/PoolCard";
 
 export default function PoolsPage() {
   const { data: pools, isLoading } = useIndexedPools();
@@ -31,70 +23,20 @@ export default function PoolsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-lg font-medium">CDS AMM Pools</h2>
-          <p className="text-sm text-zinc-500">Automated credit protection with bonding curve pricing</p>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">CDS AMM Pools</h2>
+            <p className="text-sm text-zinc-500 mt-1">Automated credit protection with bonding curve pricing</p>
+          </div>
+          <span className="text-sm text-zinc-500 bg-zinc-800/50 px-3 py-1 rounded-full">{pools.length} pool{pools.length !== 1 ? "s" : ""}</span>
         </div>
-        <span className="text-sm text-zinc-500">{pools.length} pool{pools.length !== 1 ? "s" : ""}</span>
+        <div className="mt-4 h-[1px] bg-gradient-to-r from-orange-500/40 via-amber-400/40 to-transparent" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {pools.map((pool) => {
-          const utilPct = Number(BigInt(pool.utilizationRate)) / 1e16;
-          const utilColor = utilPct > 80 ? "bg-red-500" : utilPct > 50 ? "bg-yellow-500" : "bg-green-500";
-          const maturitySec = Number(BigInt(pool.maturity));
-          const nowSec = Math.floor(Date.now() / 1000);
-          const daysLeft = maturitySec > nowSec ? Math.floor((maturitySec - nowSec) / 86400) : 0;
-
-          return (
-            <Link
-              key={pool.poolId}
-              href={`/pools/${pool.poolId}`}
-              className="block p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] hover:border-zinc-600 transition-colors"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-zinc-400">Pool #{pool.poolId}</span>
-                <span className={`text-xs px-2 py-0.5 rounded font-medium ${statusColor[pool.status] ?? "bg-zinc-500/20 text-zinc-400"}`}>
-                  {pool.status}
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Reference Asset</span>
-                  <span className="font-mono">{shortenAddress(pool.referenceAsset)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Total Liquidity</span>
-                  <span className="font-mono">{formatAmount(BigInt(pool.totalLiquidity))}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Protection Sold</span>
-                  <span className="font-mono">{formatAmount(BigInt(pool.protectionSold))}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Current Spread</span>
-                  <span className="font-mono text-[var(--accent)]">{formatWadPercent(BigInt(pool.currentSpread))}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Time to Maturity</span>
-                  <span className="font-mono">{daysLeft > 0 ? `${daysLeft}d` : "Expired"}</span>
-                </div>
-
-                {/* Utilization Bar */}
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-zinc-500">Utilization</span>
-                    <span className="text-zinc-400">{utilPct.toFixed(1)}%</span>
-                  </div>
-                  <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full transition-all ${utilColor}`} style={{ width: `${Math.min(utilPct, 100)}%` }} />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+        {pools.map((pool) => (
+          <PoolCard key={pool.poolId} pool={pool} />
+        ))}
       </div>
     </div>
   );

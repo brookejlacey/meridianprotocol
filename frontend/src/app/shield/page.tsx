@@ -23,9 +23,15 @@ export default function ShieldPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-medium">Credit Default Swaps</h2>
-        <span className="text-sm text-zinc-500">{contracts.length} contract{contracts.length !== 1 ? "s" : ""}</span>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">Credit Default Swaps</h2>
+            <p className="text-sm text-zinc-500 mt-1">Bilateral credit protection contracts with automated settlement</p>
+          </div>
+          <span className="text-sm text-zinc-500 bg-zinc-800/50 px-3 py-1 rounded-full">{contracts.length} contract{contracts.length !== 1 ? "s" : ""}</span>
+        </div>
+        <div className="mt-4 h-[1px] bg-gradient-to-r from-purple-500/40 via-pink-400/40 to-transparent" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {contracts.map((cds) => (

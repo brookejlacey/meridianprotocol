@@ -39,3 +39,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #00d4aa44;
 }
+
+/* Gradient border line */
+.gradient-border {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 170, 0.3), transparent);
+}
+
+/* Card hover glow */
+.card-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 212, 170, 0.05);
+}
