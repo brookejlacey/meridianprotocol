@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #0a0b0f;
+  --color-foreground: #e8e8ec;
+  --color-accent: #00d4aa;
+  --color-accent-dim: #00d4aa33;
+  --color-surface: #12131a;
+  --color-surface-light: #1a1b24;
+  --color-muted: #6b7280;
+  --font-sans: "Inter", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+:root {
+  --nav-h: 64px;
+}
+
+/* ─── Glow effects ─── */
+.glow-line {
+  box-shadow: 0 0 20px #00d4aa22, 0 0 40px #00d4aa11;
+}
+.text-glow {
+  text-shadow: 0 0 60px #00d4aa44, 0 0 120px #00d4aa22;
+}
+
+/* ─── Ambient orb ─── */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: float 20s ease-in-out infinite, pulse-slow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Grid background (static fine lines) ─── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ─── Dot grid background (pulsing) ─── */
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+.dot-grid-bg {
+  background-image: radial-gradient(circle, rgba(0, 212, 170, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: dot-pulse 4s ease-in-out infinite;
+}
+
+/* ─── Spinning gradient orb (large, slow, behind content) ─── */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.spinning-gradient {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(0, 212, 170, 0.06) 60deg,
+    transparent 120deg,
+    rgba(0, 136, 255, 0.04) 200deg,
+    transparent 260deg,
+    rgba(0, 212, 170, 0.05) 320deg,
+    transparent 360deg
+  );
+  filter: blur(60px);
+  animation: spin-slow 30s linear infinite;
+  pointer-events: none;
+}
+
+/* ─── Radial pulse (subtle expanding ring) ─── */
+@keyframes radial-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+  100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+}
+.radial-pulse {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, transparent 70%);
+  animation: radial-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Moving gradient stripe (horizontal shimmer) ─── */
+@keyframes shimmer-x {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 170, 0.03) 25%,
+    rgba(0, 136, 255, 0.03) 50%,
+    rgba(0, 212, 170, 0.03) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-x 12s ease-in-out infinite;
+}
+
+/* ─── Floating mockup ─── */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* ─── Gradient text ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #00d4aa 0%, #00b4d8 50%, #0088ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #00d4aa22; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #00d4aa44; }
+
+/* ─── Connection line animation ─── */
+@keyframes dash {
+  to { stroke-dashoffset: -20; }
+}
+.animated-dash {
+  stroke-dasharray: 8 12;
+  animation: dash 2s linear infinite;
+}
+
+/* ─── Section spacing ─── */
+.section {
+  padding: 6rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .section { padding: 8rem 3rem; }
+}
+@media (min-width: 1024px) {
+  .section { padding: 8rem 6rem; }
+}

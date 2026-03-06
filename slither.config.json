@@ -1,0 +1,9 @@
+{
+  "filter_paths": ["lib/", "node_modules/", "encrypted-erc/", "icm-contracts/", "avalanche-interchain-token-transfer/", "src/mocks/"],
+  "exclude_informational": true,
+  "exclude_optimization": true,
+  "detectors_to_exclude": "naming-convention,solc-version,pragma,similar-names,too-many-digits",
+  "solc_remaps": [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+  ]
+}

@@ -1,0 +1,16 @@
+export const StrategyRouterAbi = [
+  { type: "function", name: "governance", inputs: [], outputs: [{ name: "", type: "address" }], stateMutability: "view" },
+  { type: "function", name: "nextStrategyId", inputs: [], outputs: [{ name: "", type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "nextPositionId", inputs: [], outputs: [{ name: "", type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "getStrategy", inputs: [{ name: "strategyId", type: "uint256" }], outputs: [{ name: "name", type: "string" }, { name: "vaults", type: "address[]" }, { name: "allocations", type: "uint256[]" }, { name: "active", type: "bool" }], stateMutability: "view" },
+  { type: "function", name: "getPositionInfo", inputs: [{ name: "positionId", type: "uint256" }], outputs: [{ name: "user", type: "address" }, { name: "strategyId", type: "uint256" }, { name: "totalDeposited", type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "getPositionValue", inputs: [{ name: "positionId", type: "uint256" }], outputs: [{ name: "totalValue", type: "uint256" }], stateMutability: "view" },
+  { type: "function", name: "getUserPositions", inputs: [{ name: "user", type: "address" }], outputs: [{ name: "", type: "uint256[]" }], stateMutability: "view" },
+  { type: "function", name: "openPosition", inputs: [{ name: "strategyId", type: "uint256" }, { name: "amount", type: "uint256" }], outputs: [{ name: "positionId", type: "uint256" }], stateMutability: "nonpayable" },
+  { type: "function", name: "closePosition", inputs: [{ name: "positionId", type: "uint256" }], outputs: [{ name: "totalOut", type: "uint256" }], stateMutability: "nonpayable" },
+  { type: "function", name: "rebalance", inputs: [{ name: "positionId", type: "uint256" }, { name: "newStrategyId", type: "uint256" }], outputs: [], stateMutability: "nonpayable" },
+  { type: "event", name: "StrategyCreated", inputs: [{ name: "strategyId", type: "uint256", indexed: true }, { name: "name", type: "string", indexed: false }], anonymous: false },
+  { type: "event", name: "PositionOpened", inputs: [{ name: "positionId", type: "uint256", indexed: true }, { name: "user", type: "address", indexed: true }, { name: "strategyId", type: "uint256", indexed: false }, { name: "amount", type: "uint256", indexed: false }], anonymous: false },
+  { type: "event", name: "PositionClosed", inputs: [{ name: "positionId", type: "uint256", indexed: true }, { name: "user", type: "address", indexed: true }, { name: "amountOut", type: "uint256", indexed: false }], anonymous: false },
+  { type: "event", name: "PositionRebalanced", inputs: [{ name: "positionId", type: "uint256", indexed: true }, { name: "oldStrategyId", type: "uint256", indexed: false }, { name: "newStrategyId", type: "uint256", indexed: false }], anonymous: false },
+] as const;

@@ -1,0 +1,1710 @@
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+scalar BigInt
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type ViewPageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type Meta {
+  status: JSON
+}
+
+type Query {
+  vault(id: String!): vault
+  vaults(where: vaultFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): vaultPage!
+  tranche(id: String!): tranche
+  tranches(where: trancheFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): tranchePage!
+  investment(id: String!): investment
+  investments(where: investmentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): investmentPage!
+  investEvent(id: String!): investEvent
+  investEvents(where: investEventFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): investEventPage!
+  withdrawEvent(id: String!): withdrawEvent
+  withdrawEvents(where: withdrawEventFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): withdrawEventPage!
+  yieldClaimEvent(id: String!): yieldClaimEvent
+  yieldClaimEvents(where: yieldClaimEventFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): yieldClaimEventPage!
+  yieldDistribution(id: String!): yieldDistribution
+  yieldDistributions(where: yieldDistributionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): yieldDistributionPage!
+  cdsContract(id: String!): cdsContract
+  cdsContracts(where: cdsContractFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): cdsContractPage!
+  premiumPayment(id: String!): premiumPayment
+  premiumPayments(where: premiumPaymentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): premiumPaymentPage!
+  creditEvent(id: String!): creditEvent
+  creditEvents(where: creditEventFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): creditEventPage!
+  cdsPool(id: String!): cdsPool
+  cdsPools(where: cdsPoolFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): cdsPoolPage!
+  poolDeposit(id: String!): poolDeposit
+  poolDeposits(where: poolDepositFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): poolDepositPage!
+  protectionPosition(id: String!): protectionPosition
+  protectionPositions(where: protectionPositionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): protectionPositionPage!
+  marginAccount(id: String!): marginAccount
+  marginAccounts(where: marginAccountFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): marginAccountPage!
+  collateralPosition(id: String!): collateralPosition
+  collateralPositions(where: collateralPositionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): collateralPositionPage!
+  liquidation(id: String!): liquidation
+  liquidations(where: liquidationFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): liquidationPage!
+  asset(id: String!): asset
+  assets(where: assetFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): assetPage!
+  _meta: Meta
+}
+
+type vault {
+  id: String!
+  vaultId: BigInt!
+  originator: String!
+  underlyingAsset: String!
+  status: poolStatus!
+  totalDeposited: BigInt!
+  totalYieldReceived: BigInt!
+  totalYieldDistributed: BigInt!
+  lastDistribution: BigInt!
+  createdAt: BigInt!
+  blockNumber: BigInt!
+  tranches(where: trancheFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): tranchePage
+  investments(where: investmentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): investmentPage
+  yieldDistributions(where: yieldDistributionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): yieldDistributionPage
+  cdsContracts(where: cdsContractFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): cdsContractPage
+  creditEvents(where: creditEventFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): creditEventPage
+}
+
+enum poolStatus {
+  Active
+  Impaired
+  Defaulted
+  Matured
+}
+
+type tranchePage {
+  items: [tranche!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type tranche {
+  id: String!
+  vaultId: String!
+  trancheId: Int!
+  tokenAddress: String!
+  targetApr: BigInt!
+  allocationPct: BigInt!
+  totalInvested: BigInt!
+  vault: vault
+  investments(where: investmentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): investmentPage
+}
+
+type investmentPage {
+  items: [investment!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type investment {
+  id: String!
+  vaultId: String!
+  trancheId: String!
+  investor: String!
+  totalInvested: BigInt!
+  totalWithdrawn: BigInt!
+  totalYieldClaimed: BigInt!
+  vault: vault
+  tranche: tranche
+}
+
+input investmentFilter {
+  AND: [investmentFilter]
+  OR: [investmentFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  trancheId: String
+  trancheId_not: String
+  trancheId_in: [String]
+  trancheId_not_in: [String]
+  trancheId_contains: String
+  trancheId_not_contains: String
+  trancheId_starts_with: String
+  trancheId_ends_with: String
+  trancheId_not_starts_with: String
+  trancheId_not_ends_with: String
+  investor: String
+  investor_not: String
+  investor_in: [String]
+  investor_not_in: [String]
+  investor_contains: String
+  investor_not_contains: String
+  investor_starts_with: String
+  investor_ends_with: String
+  investor_not_starts_with: String
+  investor_not_ends_with: String
+  totalInvested: BigInt
+  totalInvested_not: BigInt
+  totalInvested_in: [BigInt]
+  totalInvested_not_in: [BigInt]
+  totalInvested_gt: BigInt
+  totalInvested_lt: BigInt
+  totalInvested_gte: BigInt
+  totalInvested_lte: BigInt
+  totalWithdrawn: BigInt
+  totalWithdrawn_not: BigInt
+  totalWithdrawn_in: [BigInt]
+  totalWithdrawn_not_in: [BigInt]
+  totalWithdrawn_gt: BigInt
+  totalWithdrawn_lt: BigInt
+  totalWithdrawn_gte: BigInt
+  totalWithdrawn_lte: BigInt
+  totalYieldClaimed: BigInt
+  totalYieldClaimed_not: BigInt
+  totalYieldClaimed_in: [BigInt]
+  totalYieldClaimed_not_in: [BigInt]
+  totalYieldClaimed_gt: BigInt
+  totalYieldClaimed_lt: BigInt
+  totalYieldClaimed_gte: BigInt
+  totalYieldClaimed_lte: BigInt
+}
+
+input trancheFilter {
+  AND: [trancheFilter]
+  OR: [trancheFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  trancheId: Int
+  trancheId_not: Int
+  trancheId_in: [Int]
+  trancheId_not_in: [Int]
+  trancheId_gt: Int
+  trancheId_lt: Int
+  trancheId_gte: Int
+  trancheId_lte: Int
+  tokenAddress: String
+  tokenAddress_not: String
+  tokenAddress_in: [String]
+  tokenAddress_not_in: [String]
+  tokenAddress_contains: String
+  tokenAddress_not_contains: String
+  tokenAddress_starts_with: String
+  tokenAddress_ends_with: String
+  tokenAddress_not_starts_with: String
+  tokenAddress_not_ends_with: String
+  targetApr: BigInt
+  targetApr_not: BigInt
+  targetApr_in: [BigInt]
+  targetApr_not_in: [BigInt]
+  targetApr_gt: BigInt
+  targetApr_lt: BigInt
+  targetApr_gte: BigInt
+  targetApr_lte: BigInt
+  allocationPct: BigInt
+  allocationPct_not: BigInt
+  allocationPct_in: [BigInt]
+  allocationPct_not_in: [BigInt]
+  allocationPct_gt: BigInt
+  allocationPct_lt: BigInt
+  allocationPct_gte: BigInt
+  allocationPct_lte: BigInt
+  totalInvested: BigInt
+  totalInvested_not: BigInt
+  totalInvested_in: [BigInt]
+  totalInvested_not_in: [BigInt]
+  totalInvested_gt: BigInt
+  totalInvested_lt: BigInt
+  totalInvested_gte: BigInt
+  totalInvested_lte: BigInt
+}
+
+type yieldDistributionPage {
+  items: [yieldDistribution!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type yieldDistribution {
+  id: String!
+  vaultId: String!
+  totalYield: BigInt!
+  seniorAmount: BigInt!
+  mezzAmount: BigInt!
+  equityAmount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  vault: vault
+}
+
+input yieldDistributionFilter {
+  AND: [yieldDistributionFilter]
+  OR: [yieldDistributionFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  totalYield: BigInt
+  totalYield_not: BigInt
+  totalYield_in: [BigInt]
+  totalYield_not_in: [BigInt]
+  totalYield_gt: BigInt
+  totalYield_lt: BigInt
+  totalYield_gte: BigInt
+  totalYield_lte: BigInt
+  seniorAmount: BigInt
+  seniorAmount_not: BigInt
+  seniorAmount_in: [BigInt]
+  seniorAmount_not_in: [BigInt]
+  seniorAmount_gt: BigInt
+  seniorAmount_lt: BigInt
+  seniorAmount_gte: BigInt
+  seniorAmount_lte: BigInt
+  mezzAmount: BigInt
+  mezzAmount_not: BigInt
+  mezzAmount_in: [BigInt]
+  mezzAmount_not_in: [BigInt]
+  mezzAmount_gt: BigInt
+  mezzAmount_lt: BigInt
+  mezzAmount_gte: BigInt
+  mezzAmount_lte: BigInt
+  equityAmount: BigInt
+  equityAmount_not: BigInt
+  equityAmount_in: [BigInt]
+  equityAmount_not_in: [BigInt]
+  equityAmount_gt: BigInt
+  equityAmount_lt: BigInt
+  equityAmount_gte: BigInt
+  equityAmount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type cdsContractPage {
+  items: [cdsContract!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type cdsContract {
+  id: String!
+  cdsId: BigInt!
+  referenceVaultId: String!
+  creator: String!
+  buyer: String
+  seller: String
+  protectionAmount: BigInt!
+  premiumRate: BigInt!
+  maturity: BigInt!
+  collateralToken: String!
+  status: cdsStatus!
+  collateralPosted: BigInt!
+  totalPremiumPaid: BigInt!
+  createdAt: BigInt!
+  blockNumber: BigInt!
+  referenceVault: vault
+  premiumPayments(where: premiumPaymentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): premiumPaymentPage
+}
+
+enum cdsStatus {
+  Open
+  Active
+  Triggered
+  Settled
+  Expired
+}
+
+type premiumPaymentPage {
+  items: [premiumPayment!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type premiumPayment {
+  id: String!
+  cdsId: String!
+  buyer: String!
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  cds: cdsContract
+}
+
+input premiumPaymentFilter {
+  AND: [premiumPaymentFilter]
+  OR: [premiumPaymentFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  cdsId: String
+  cdsId_not: String
+  cdsId_in: [String]
+  cdsId_not_in: [String]
+  cdsId_contains: String
+  cdsId_not_contains: String
+  cdsId_starts_with: String
+  cdsId_ends_with: String
+  cdsId_not_starts_with: String
+  cdsId_not_ends_with: String
+  buyer: String
+  buyer_not: String
+  buyer_in: [String]
+  buyer_not_in: [String]
+  buyer_contains: String
+  buyer_not_contains: String
+  buyer_starts_with: String
+  buyer_ends_with: String
+  buyer_not_starts_with: String
+  buyer_not_ends_with: String
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+input cdsContractFilter {
+  AND: [cdsContractFilter]
+  OR: [cdsContractFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  cdsId: BigInt
+  cdsId_not: BigInt
+  cdsId_in: [BigInt]
+  cdsId_not_in: [BigInt]
+  cdsId_gt: BigInt
+  cdsId_lt: BigInt
+  cdsId_gte: BigInt
+  cdsId_lte: BigInt
+  referenceVaultId: String
+  referenceVaultId_not: String
+  referenceVaultId_in: [String]
+  referenceVaultId_not_in: [String]
+  referenceVaultId_contains: String
+  referenceVaultId_not_contains: String
+  referenceVaultId_starts_with: String
+  referenceVaultId_ends_with: String
+  referenceVaultId_not_starts_with: String
+  referenceVaultId_not_ends_with: String
+  creator: String
+  creator_not: String
+  creator_in: [String]
+  creator_not_in: [String]
+  creator_contains: String
+  creator_not_contains: String
+  creator_starts_with: String
+  creator_ends_with: String
+  creator_not_starts_with: String
+  creator_not_ends_with: String
+  buyer: String
+  buyer_not: String
+  buyer_in: [String]
+  buyer_not_in: [String]
+  buyer_contains: String
+  buyer_not_contains: String
+  buyer_starts_with: String
+  buyer_ends_with: String
+  buyer_not_starts_with: String
+  buyer_not_ends_with: String
+  seller: String
+  seller_not: String
+  seller_in: [String]
+  seller_not_in: [String]
+  seller_contains: String
+  seller_not_contains: String
+  seller_starts_with: String
+  seller_ends_with: String
+  seller_not_starts_with: String
+  seller_not_ends_with: String
+  protectionAmount: BigInt
+  protectionAmount_not: BigInt
+  protectionAmount_in: [BigInt]
+  protectionAmount_not_in: [BigInt]
+  protectionAmount_gt: BigInt
+  protectionAmount_lt: BigInt
+  protectionAmount_gte: BigInt
+  protectionAmount_lte: BigInt
+  premiumRate: BigInt
+  premiumRate_not: BigInt
+  premiumRate_in: [BigInt]
+  premiumRate_not_in: [BigInt]
+  premiumRate_gt: BigInt
+  premiumRate_lt: BigInt
+  premiumRate_gte: BigInt
+  premiumRate_lte: BigInt
+  maturity: BigInt
+  maturity_not: BigInt
+  maturity_in: [BigInt]
+  maturity_not_in: [BigInt]
+  maturity_gt: BigInt
+  maturity_lt: BigInt
+  maturity_gte: BigInt
+  maturity_lte: BigInt
+  collateralToken: String
+  collateralToken_not: String
+  collateralToken_in: [String]
+  collateralToken_not_in: [String]
+  collateralToken_contains: String
+  collateralToken_not_contains: String
+  collateralToken_starts_with: String
+  collateralToken_ends_with: String
+  collateralToken_not_starts_with: String
+  collateralToken_not_ends_with: String
+  status: cdsStatus
+  status_not: cdsStatus
+  status_in: [cdsStatus]
+  status_not_in: [cdsStatus]
+  collateralPosted: BigInt
+  collateralPosted_not: BigInt
+  collateralPosted_in: [BigInt]
+  collateralPosted_not_in: [BigInt]
+  collateralPosted_gt: BigInt
+  collateralPosted_lt: BigInt
+  collateralPosted_gte: BigInt
+  collateralPosted_lte: BigInt
+  totalPremiumPaid: BigInt
+  totalPremiumPaid_not: BigInt
+  totalPremiumPaid_in: [BigInt]
+  totalPremiumPaid_not_in: [BigInt]
+  totalPremiumPaid_gt: BigInt
+  totalPremiumPaid_lt: BigInt
+  totalPremiumPaid_gte: BigInt
+  totalPremiumPaid_lte: BigInt
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_in: [BigInt]
+  createdAt_not_in: [BigInt]
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+}
+
+type creditEventPage {
+  items: [creditEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type creditEvent {
+  id: String!
+  vaultId: String!
+  eventType: creditEventType!
+  lossAmount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  vault: vault
+}
+
+enum creditEventType {
+  None
+  Impairment
+  Default
+}
+
+input creditEventFilter {
+  AND: [creditEventFilter]
+  OR: [creditEventFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  eventType: creditEventType
+  eventType_not: creditEventType
+  eventType_in: [creditEventType]
+  eventType_not_in: [creditEventType]
+  lossAmount: BigInt
+  lossAmount_not: BigInt
+  lossAmount_in: [BigInt]
+  lossAmount_not_in: [BigInt]
+  lossAmount_gt: BigInt
+  lossAmount_lt: BigInt
+  lossAmount_gte: BigInt
+  lossAmount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type vaultPage {
+  items: [vault!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input vaultFilter {
+  AND: [vaultFilter]
+  OR: [vaultFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: BigInt
+  vaultId_not: BigInt
+  vaultId_in: [BigInt]
+  vaultId_not_in: [BigInt]
+  vaultId_gt: BigInt
+  vaultId_lt: BigInt
+  vaultId_gte: BigInt
+  vaultId_lte: BigInt
+  originator: String
+  originator_not: String
+  originator_in: [String]
+  originator_not_in: [String]
+  originator_contains: String
+  originator_not_contains: String
+  originator_starts_with: String
+  originator_ends_with: String
+  originator_not_starts_with: String
+  originator_not_ends_with: String
+  underlyingAsset: String
+  underlyingAsset_not: String
+  underlyingAsset_in: [String]
+  underlyingAsset_not_in: [String]
+  underlyingAsset_contains: String
+  underlyingAsset_not_contains: String
+  underlyingAsset_starts_with: String
+  underlyingAsset_ends_with: String
+  underlyingAsset_not_starts_with: String
+  underlyingAsset_not_ends_with: String
+  status: poolStatus
+  status_not: poolStatus
+  status_in: [poolStatus]
+  status_not_in: [poolStatus]
+  totalDeposited: BigInt
+  totalDeposited_not: BigInt
+  totalDeposited_in: [BigInt]
+  totalDeposited_not_in: [BigInt]
+  totalDeposited_gt: BigInt
+  totalDeposited_lt: BigInt
+  totalDeposited_gte: BigInt
+  totalDeposited_lte: BigInt
+  totalYieldReceived: BigInt
+  totalYieldReceived_not: BigInt
+  totalYieldReceived_in: [BigInt]
+  totalYieldReceived_not_in: [BigInt]
+  totalYieldReceived_gt: BigInt
+  totalYieldReceived_lt: BigInt
+  totalYieldReceived_gte: BigInt
+  totalYieldReceived_lte: BigInt
+  totalYieldDistributed: BigInt
+  totalYieldDistributed_not: BigInt
+  totalYieldDistributed_in: [BigInt]
+  totalYieldDistributed_not_in: [BigInt]
+  totalYieldDistributed_gt: BigInt
+  totalYieldDistributed_lt: BigInt
+  totalYieldDistributed_gte: BigInt
+  totalYieldDistributed_lte: BigInt
+  lastDistribution: BigInt
+  lastDistribution_not: BigInt
+  lastDistribution_in: [BigInt]
+  lastDistribution_not_in: [BigInt]
+  lastDistribution_gt: BigInt
+  lastDistribution_lt: BigInt
+  lastDistribution_gte: BigInt
+  lastDistribution_lte: BigInt
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_in: [BigInt]
+  createdAt_not_in: [BigInt]
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+}
+
+type investEvent {
+  id: String!
+  vaultId: String!
+  investor: String!
+  trancheId: Int!
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+}
+
+type investEventPage {
+  items: [investEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input investEventFilter {
+  AND: [investEventFilter]
+  OR: [investEventFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  investor: String
+  investor_not: String
+  investor_in: [String]
+  investor_not_in: [String]
+  investor_contains: String
+  investor_not_contains: String
+  investor_starts_with: String
+  investor_ends_with: String
+  investor_not_starts_with: String
+  investor_not_ends_with: String
+  trancheId: Int
+  trancheId_not: Int
+  trancheId_in: [Int]
+  trancheId_not_in: [Int]
+  trancheId_gt: Int
+  trancheId_lt: Int
+  trancheId_gte: Int
+  trancheId_lte: Int
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type withdrawEvent {
+  id: String!
+  vaultId: String!
+  investor: String!
+  trancheId: Int!
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+}
+
+type withdrawEventPage {
+  items: [withdrawEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input withdrawEventFilter {
+  AND: [withdrawEventFilter]
+  OR: [withdrawEventFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  investor: String
+  investor_not: String
+  investor_in: [String]
+  investor_not_in: [String]
+  investor_contains: String
+  investor_not_contains: String
+  investor_starts_with: String
+  investor_ends_with: String
+  investor_not_starts_with: String
+  investor_not_ends_with: String
+  trancheId: Int
+  trancheId_not: Int
+  trancheId_in: [Int]
+  trancheId_not_in: [Int]
+  trancheId_gt: Int
+  trancheId_lt: Int
+  trancheId_gte: Int
+  trancheId_lte: Int
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type yieldClaimEvent {
+  id: String!
+  vaultId: String!
+  investor: String!
+  trancheId: Int!
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+}
+
+type yieldClaimEventPage {
+  items: [yieldClaimEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input yieldClaimEventFilter {
+  AND: [yieldClaimEventFilter]
+  OR: [yieldClaimEventFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  investor: String
+  investor_not: String
+  investor_in: [String]
+  investor_not_in: [String]
+  investor_contains: String
+  investor_not_contains: String
+  investor_starts_with: String
+  investor_ends_with: String
+  investor_not_starts_with: String
+  investor_not_ends_with: String
+  trancheId: Int
+  trancheId_not: Int
+  trancheId_in: [Int]
+  trancheId_not_in: [Int]
+  trancheId_gt: Int
+  trancheId_lt: Int
+  trancheId_gte: Int
+  trancheId_lte: Int
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type cdsPool {
+  id: String!
+  poolId: BigInt!
+  referenceAsset: String!
+  collateralToken: String!
+  oracle: String!
+  maturity: BigInt!
+  baseSpreadWad: BigInt!
+  slopeWad: BigInt!
+  creator: String!
+  status: cdsPoolStatus!
+  totalDeposits: BigInt!
+  totalPremiumsEarned: BigInt!
+  totalProtectionSold: BigInt!
+  createdAt: BigInt!
+  blockNumber: BigInt!
+  lpDeposits(where: poolDepositFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): poolDepositPage
+  protectionPositions(where: protectionPositionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): protectionPositionPage
+}
+
+enum cdsPoolStatus {
+  Active
+  Triggered
+  Settled
+  Expired
+}
+
+type poolDepositPage {
+  items: [poolDeposit!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type poolDeposit {
+  id: String!
+  poolId: String!
+  lp: String!
+  amount: BigInt!
+  shares: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  pool: cdsPool
+}
+
+input poolDepositFilter {
+  AND: [poolDepositFilter]
+  OR: [poolDepositFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  poolId: String
+  poolId_not: String
+  poolId_in: [String]
+  poolId_not_in: [String]
+  poolId_contains: String
+  poolId_not_contains: String
+  poolId_starts_with: String
+  poolId_ends_with: String
+  poolId_not_starts_with: String
+  poolId_not_ends_with: String
+  lp: String
+  lp_not: String
+  lp_in: [String]
+  lp_not_in: [String]
+  lp_contains: String
+  lp_not_contains: String
+  lp_starts_with: String
+  lp_ends_with: String
+  lp_not_starts_with: String
+  lp_not_ends_with: String
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  shares: BigInt
+  shares_not: BigInt
+  shares_in: [BigInt]
+  shares_not_in: [BigInt]
+  shares_gt: BigInt
+  shares_lt: BigInt
+  shares_gte: BigInt
+  shares_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type protectionPositionPage {
+  items: [protectionPosition!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type protectionPosition {
+  id: String!
+  poolId: String!
+  positionId: BigInt!
+  buyer: String!
+  notional: BigInt!
+  premiumPaid: BigInt!
+  spreadWad: BigInt!
+  active: Boolean!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  pool: cdsPool
+}
+
+input protectionPositionFilter {
+  AND: [protectionPositionFilter]
+  OR: [protectionPositionFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  poolId: String
+  poolId_not: String
+  poolId_in: [String]
+  poolId_not_in: [String]
+  poolId_contains: String
+  poolId_not_contains: String
+  poolId_starts_with: String
+  poolId_ends_with: String
+  poolId_not_starts_with: String
+  poolId_not_ends_with: String
+  positionId: BigInt
+  positionId_not: BigInt
+  positionId_in: [BigInt]
+  positionId_not_in: [BigInt]
+  positionId_gt: BigInt
+  positionId_lt: BigInt
+  positionId_gte: BigInt
+  positionId_lte: BigInt
+  buyer: String
+  buyer_not: String
+  buyer_in: [String]
+  buyer_not_in: [String]
+  buyer_contains: String
+  buyer_not_contains: String
+  buyer_starts_with: String
+  buyer_ends_with: String
+  buyer_not_starts_with: String
+  buyer_not_ends_with: String
+  notional: BigInt
+  notional_not: BigInt
+  notional_in: [BigInt]
+  notional_not_in: [BigInt]
+  notional_gt: BigInt
+  notional_lt: BigInt
+  notional_gte: BigInt
+  notional_lte: BigInt
+  premiumPaid: BigInt
+  premiumPaid_not: BigInt
+  premiumPaid_in: [BigInt]
+  premiumPaid_not_in: [BigInt]
+  premiumPaid_gt: BigInt
+  premiumPaid_lt: BigInt
+  premiumPaid_gte: BigInt
+  premiumPaid_lte: BigInt
+  spreadWad: BigInt
+  spreadWad_not: BigInt
+  spreadWad_in: [BigInt]
+  spreadWad_not_in: [BigInt]
+  spreadWad_gt: BigInt
+  spreadWad_lt: BigInt
+  spreadWad_gte: BigInt
+  spreadWad_lte: BigInt
+  active: Boolean
+  active_not: Boolean
+  active_in: [Boolean]
+  active_not_in: [Boolean]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type cdsPoolPage {
+  items: [cdsPool!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input cdsPoolFilter {
+  AND: [cdsPoolFilter]
+  OR: [cdsPoolFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  poolId: BigInt
+  poolId_not: BigInt
+  poolId_in: [BigInt]
+  poolId_not_in: [BigInt]
+  poolId_gt: BigInt
+  poolId_lt: BigInt
+  poolId_gte: BigInt
+  poolId_lte: BigInt
+  referenceAsset: String
+  referenceAsset_not: String
+  referenceAsset_in: [String]
+  referenceAsset_not_in: [String]
+  referenceAsset_contains: String
+  referenceAsset_not_contains: String
+  referenceAsset_starts_with: String
+  referenceAsset_ends_with: String
+  referenceAsset_not_starts_with: String
+  referenceAsset_not_ends_with: String
+  collateralToken: String
+  collateralToken_not: String
+  collateralToken_in: [String]
+  collateralToken_not_in: [String]
+  collateralToken_contains: String
+  collateralToken_not_contains: String
+  collateralToken_starts_with: String
+  collateralToken_ends_with: String
+  collateralToken_not_starts_with: String
+  collateralToken_not_ends_with: String
+  oracle: String
+  oracle_not: String
+  oracle_in: [String]
+  oracle_not_in: [String]
+  oracle_contains: String
+  oracle_not_contains: String
+  oracle_starts_with: String
+  oracle_ends_with: String
+  oracle_not_starts_with: String
+  oracle_not_ends_with: String
+  maturity: BigInt
+  maturity_not: BigInt
+  maturity_in: [BigInt]
+  maturity_not_in: [BigInt]
+  maturity_gt: BigInt
+  maturity_lt: BigInt
+  maturity_gte: BigInt
+  maturity_lte: BigInt
+  baseSpreadWad: BigInt
+  baseSpreadWad_not: BigInt
+  baseSpreadWad_in: [BigInt]
+  baseSpreadWad_not_in: [BigInt]
+  baseSpreadWad_gt: BigInt
+  baseSpreadWad_lt: BigInt
+  baseSpreadWad_gte: BigInt
+  baseSpreadWad_lte: BigInt
+  slopeWad: BigInt
+  slopeWad_not: BigInt
+  slopeWad_in: [BigInt]
+  slopeWad_not_in: [BigInt]
+  slopeWad_gt: BigInt
+  slopeWad_lt: BigInt
+  slopeWad_gte: BigInt
+  slopeWad_lte: BigInt
+  creator: String
+  creator_not: String
+  creator_in: [String]
+  creator_not_in: [String]
+  creator_contains: String
+  creator_not_contains: String
+  creator_starts_with: String
+  creator_ends_with: String
+  creator_not_starts_with: String
+  creator_not_ends_with: String
+  status: cdsPoolStatus
+  status_not: cdsPoolStatus
+  status_in: [cdsPoolStatus]
+  status_not_in: [cdsPoolStatus]
+  totalDeposits: BigInt
+  totalDeposits_not: BigInt
+  totalDeposits_in: [BigInt]
+  totalDeposits_not_in: [BigInt]
+  totalDeposits_gt: BigInt
+  totalDeposits_lt: BigInt
+  totalDeposits_gte: BigInt
+  totalDeposits_lte: BigInt
+  totalPremiumsEarned: BigInt
+  totalPremiumsEarned_not: BigInt
+  totalPremiumsEarned_in: [BigInt]
+  totalPremiumsEarned_not_in: [BigInt]
+  totalPremiumsEarned_gt: BigInt
+  totalPremiumsEarned_lt: BigInt
+  totalPremiumsEarned_gte: BigInt
+  totalPremiumsEarned_lte: BigInt
+  totalProtectionSold: BigInt
+  totalProtectionSold_not: BigInt
+  totalProtectionSold_in: [BigInt]
+  totalProtectionSold_not_in: [BigInt]
+  totalProtectionSold_gt: BigInt
+  totalProtectionSold_lt: BigInt
+  totalProtectionSold_gte: BigInt
+  totalProtectionSold_lte: BigInt
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_in: [BigInt]
+  createdAt_not_in: [BigInt]
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+}
+
+type marginAccount {
+  id: String!
+  user: String!
+  openedAt: BigInt!
+  blockNumber: BigInt!
+  collateralPositions(where: collateralPositionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): collateralPositionPage
+  liquidations(where: liquidationFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): liquidationPage
+}
+
+type collateralPositionPage {
+  items: [collateralPosition!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type collateralPosition {
+  id: String!
+  accountId: String!
+  asset: String!
+  currentBalance: BigInt!
+  account: marginAccount
+}
+
+input collateralPositionFilter {
+  AND: [collateralPositionFilter]
+  OR: [collateralPositionFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  accountId: String
+  accountId_not: String
+  accountId_in: [String]
+  accountId_not_in: [String]
+  accountId_contains: String
+  accountId_not_contains: String
+  accountId_starts_with: String
+  accountId_ends_with: String
+  accountId_not_starts_with: String
+  accountId_not_ends_with: String
+  asset: String
+  asset_not: String
+  asset_in: [String]
+  asset_not_in: [String]
+  asset_contains: String
+  asset_not_contains: String
+  asset_starts_with: String
+  asset_ends_with: String
+  asset_not_starts_with: String
+  asset_not_ends_with: String
+  currentBalance: BigInt
+  currentBalance_not: BigInt
+  currentBalance_in: [BigInt]
+  currentBalance_not_in: [BigInt]
+  currentBalance_gt: BigInt
+  currentBalance_lt: BigInt
+  currentBalance_gte: BigInt
+  currentBalance_lte: BigInt
+}
+
+type liquidationPage {
+  items: [liquidation!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type liquidation {
+  id: String!
+  accountId: String!
+  liquidator: String!
+  collateralSeized: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  txHash: String!
+  account: marginAccount
+}
+
+input liquidationFilter {
+  AND: [liquidationFilter]
+  OR: [liquidationFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  accountId: String
+  accountId_not: String
+  accountId_in: [String]
+  accountId_not_in: [String]
+  accountId_contains: String
+  accountId_not_contains: String
+  accountId_starts_with: String
+  accountId_ends_with: String
+  accountId_not_starts_with: String
+  accountId_not_ends_with: String
+  liquidator: String
+  liquidator_not: String
+  liquidator_in: [String]
+  liquidator_not_in: [String]
+  liquidator_contains: String
+  liquidator_not_contains: String
+  liquidator_starts_with: String
+  liquidator_ends_with: String
+  liquidator_not_starts_with: String
+  liquidator_not_ends_with: String
+  collateralSeized: BigInt
+  collateralSeized_not: BigInt
+  collateralSeized_in: [BigInt]
+  collateralSeized_not_in: [BigInt]
+  collateralSeized_gt: BigInt
+  collateralSeized_lt: BigInt
+  collateralSeized_gte: BigInt
+  collateralSeized_lte: BigInt
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  txHash: String
+  txHash_not: String
+  txHash_in: [String]
+  txHash_not_in: [String]
+  txHash_contains: String
+  txHash_not_contains: String
+  txHash_starts_with: String
+  txHash_ends_with: String
+  txHash_not_starts_with: String
+  txHash_not_ends_with: String
+}
+
+type marginAccountPage {
+  items: [marginAccount!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input marginAccountFilter {
+  AND: [marginAccountFilter]
+  OR: [marginAccountFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  user: String
+  user_not: String
+  user_in: [String]
+  user_not_in: [String]
+  user_contains: String
+  user_not_contains: String
+  user_starts_with: String
+  user_ends_with: String
+  user_not_starts_with: String
+  user_not_ends_with: String
+  openedAt: BigInt
+  openedAt_not: BigInt
+  openedAt_in: [BigInt]
+  openedAt_not_in: [BigInt]
+  openedAt_gt: BigInt
+  openedAt_lt: BigInt
+  openedAt_gte: BigInt
+  openedAt_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+}
+
+type asset {
+  id: String!
+  price: BigInt!
+  riskWeight: BigInt!
+  lastUpdated: BigInt!
+}
+
+type assetPage {
+  items: [asset!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input assetFilter {
+  AND: [assetFilter]
+  OR: [assetFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  price: BigInt
+  price_not: BigInt
+  price_in: [BigInt]
+  price_not_in: [BigInt]
+  price_gt: BigInt
+  price_lt: BigInt
+  price_gte: BigInt
+  price_lte: BigInt
+  riskWeight: BigInt
+  riskWeight_not: BigInt
+  riskWeight_in: [BigInt]
+  riskWeight_not_in: [BigInt]
+  riskWeight_gt: BigInt
+  riskWeight_lt: BigInt
+  riskWeight_gte: BigInt
+  riskWeight_lte: BigInt
+  lastUpdated: BigInt
+  lastUpdated_not: BigInt
+  lastUpdated_in: [BigInt]
+  lastUpdated_not_in: [BigInt]
+  lastUpdated_gt: BigInt
+  lastUpdated_lt: BigInt
+  lastUpdated_gte: BigInt
+  lastUpdated_lte: BigInt
+}
