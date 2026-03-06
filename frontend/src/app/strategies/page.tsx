@@ -1,87 +1,35 @@
 "use client";
 
-import { useAccount } from "wagmi";
-import { type Address, formatUnits } from "viem";
-import { useState } from "react";
-import {
-  useStrategyCount,
-  useStrategy,
-  useUserPositions,
-  usePositionInfo,
-  usePositionValue,
-} from "@/hooks/useStrategyRouter";
-
-const ROUTER_ADDRESS = (process.env.NEXT_PUBLIC_STRATEGY_ROUTER || "0x0000000000000000000000000000000000000000") as Address;
-
-const TRANCHE_LABELS: Record<number, string> = { 0: "Senior", 1: "Mezzanine", 2: "Equity" };
-
-function fmt(val: bigint | undefined) {
-  if (!val) return "0.00";
-  return Number(formatUnits(val, 18)).toLocaleString(undefined, { maximumFractionDigits: 2 });
-}
-
-function StrategyCard({ strategyId }: { strategyId: number }) {
-  const { data } = useStrategy(ROUTER_ADDRESS, BigInt(strategyId));
-  if (!data) return null;
-
-  const [name, vaults, allocations, active] = data;
-
-  return (
-    <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-4">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="font-medium">{name || `Strategy #${strategyId}`}</h3>
-        <span className={`text-xs px-2 py-0.5 rounded ${active ? "bg-green-900/50 text-green-400" : "bg-red-900/50 text-red-400"}`}>
-          {active ? "Active" : "Paused"}
-        </span>
-      </div>
-      <div className="space-y-2">
-        {vaults.map((vault: string, i: number) => (
-          <div key={vault} className="flex items-center justify-between text-sm">
-            <span className="text-zinc-400 font-mono text-xs">{vault.slice(0, 10)}...</span>
-            <span className="text-zinc-300">{Number(allocations[i]) / 100}%</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PositionRow({ positionId }: { positionId: bigint }) {
-  const { data: info } = usePositionInfo(ROUTER_ADDRESS, positionId);
-  const { data: value } = usePositionValue(ROUTER_ADDRESS, positionId);
-  const { data: strategy } = useStrategy(ROUTER_ADDRESS, info ? info[1] : undefined);
-
-  if (!info) return null;
-
-  const deposited = info[2];
-  const currentValue = value || 0n;
-  const pnl = Number(formatUnits(currentValue - deposited, 18));
-
-  return (
-    <tr className="border-t border-zinc-800">
-      <td className="py-2 text-sm">{Number(positionId)}</td>
-      <td className="py-2 text-sm">{strategy ? strategy[0] : `#${Number(info[1])}`}</td>
-      <td className="py-2 text-sm text-right">{fmt(deposited)}</td>
-      <td className="py-2 text-sm text-right">{fmt(currentValue)}</td>
-      <td className={`py-2 text-sm text-right ${pnl >= 0 ? "text-green-400" : "text-red-400"}`}>
-        {pnl >= 0 ? "+" : ""}{pnl.toFixed(2)}
-      </td>
-    </tr>
-  );
-}
+const strategies = [
+  {
+    name: "Conservative Senior",
+    apy: "~4.5%",
+    allocations: [
+      { label: "Senior Vault #0", pct: 60, color: "from-green-500 to-emerald-500" },
+      { label: "Senior Vault #1", pct: 40, color: "from-green-600 to-emerald-600" },
+    ],
+  },
+  {
+    name: "Balanced Growth",
+    apy: "~8.2%",
+    allocations: [
+      { label: "Mezz Vault #0", pct: 40, color: "from-amber-500 to-yellow-500" },
+      { label: "Mezz Vault #1", pct: 30, color: "from-amber-600 to-yellow-600" },
+      { label: "Senior Vault #2", pct: 30, color: "from-green-500 to-emerald-500" },
+    ],
+  },
+  {
+    name: "High Yield Alpha",
+    apy: "~14.8%",
+    allocations: [
+      { label: "Equity Vault #0", pct: 50, color: "from-rose-500 to-pink-500" },
+      { label: "Equity Vault #1", pct: 30, color: "from-rose-600 to-pink-600" },
+      { label: "Mezz Vault #2", pct: 20, color: "from-amber-500 to-yellow-500" },
+    ],
+  },
+];
 
 export default function StrategiesPage() {
-  const { address } = useAccount();
-  const { data: stratCount, isLoading } = useStrategyCount(ROUTER_ADDRESS);
-  const { data: positions } = useUserPositions(ROUTER_ADDRESS, address);
-
-  const count = stratCount ? Number(stratCount) : 0;
-  const positionIds = positions || [];
-
-  if (isLoading) {
-    return <div className="text-zinc-500">Loading strategies...</div>;
-  }
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -94,51 +42,58 @@ export default function StrategiesPage() {
 
       {/* Strategies Grid */}
       <div>
-        <h3 className="text-sm font-medium text-zinc-400 mb-3">Available Strategies ({count})</h3>
-        {count === 0 ? (
-          <p className="text-sm text-zinc-600">No strategies created yet. Deploy a StrategyRouter and create strategies.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: count }, (_, i) => (
-              <StrategyCard key={i} strategyId={i} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* User Positions */}
-      <div>
         <h3 className="text-sm font-medium text-zinc-400 mb-3">
-          Your Positions ({positionIds.length})
+          Available Strategies ({strategies.length})
         </h3>
-        {!address ? (
-          <p className="text-sm text-zinc-600">Connect wallet to view positions.</p>
-        ) : positionIds.length === 0 ? (
-          <p className="text-sm text-zinc-600">No open positions. Select a strategy above to get started.</p>
-        ) : (
-          <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="text-xs text-zinc-500 text-left">
-                  <th className="px-4 py-2">ID</th>
-                  <th className="px-4 py-2">Strategy</th>
-                  <th className="px-4 py-2 text-right">Deposited</th>
-                  <th className="px-4 py-2 text-right">Current Value</th>
-                  <th className="px-4 py-2 text-right">P&L</th>
-                </tr>
-              </thead>
-              <tbody className="px-4">
-                {positionIds.map((pid: bigint) => (
-                  <PositionRow key={Number(pid)} positionId={pid} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {strategies.map((s) => (
+            <div
+              key={s.name}
+              className="group relative bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl overflow-hidden transition-shadow hover:shadow-[0_0_24px_rgba(16,185,129,0.08)]"
+            >
+              {/* Gradient accent bar */}
+              <div className="h-1 w-full bg-gradient-to-r from-green-500 to-emerald-500" />
+
+              <div className="p-5 space-y-4">
+                {/* Title row */}
+                <div className="flex items-center justify-between">
+                  <h3 className="font-medium">{s.name}</h3>
+                  <span className="text-xs px-2 py-0.5 rounded bg-green-900/50 text-green-400">
+                    Active
+                  </span>
+                </div>
+
+                {/* Projected APY */}
+                <div className="text-center py-2">
+                  <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Projected APY</p>
+                  <p className="text-2xl font-bold text-green-400">{s.apy}</p>
+                </div>
+
+                {/* Allocation bars */}
+                <div className="space-y-3">
+                  {s.allocations.map((a) => (
+                    <div key={a.label}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-zinc-400">{a.label}</span>
+                        <span className="text-zinc-300 font-medium">{a.pct}%</span>
+                      </div>
+                      <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full bg-gradient-to-r ${a.color} rounded-full`}
+                          style={{ width: `${a.pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Info Box */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-sm text-zinc-400">
+      <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-400">
         <p className="font-medium text-zinc-300 mb-2">How Yield Strategies Work</p>
         <ul className="space-y-1 list-disc list-inside">
           <li>Each YieldVault wraps a ForgeVault tranche with ERC-4626 auto-compounding</li>
