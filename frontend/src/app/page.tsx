@@ -2,13 +2,6 @@
 
 import Link from "next/link";
 
-const stats = [
-  { label: "Smart Contracts", value: "35+" },
-  { label: "Tests Passing", value: "692" },
-  { label: "Protocol Layers", value: "6" },
-  { label: "Fuzz Runs", value: "10,000" },
-];
-
 const layers = [
   {
     name: "Forge",
@@ -152,130 +145,23 @@ const colorMap: Record<string, { border: string; bg: string; text: string; dot: 
 export default function Home() {
   return (
     <div className="pb-12">
-      {/* ── Hero Section ── */}
-      <section
-        className="relative overflow-hidden -mx-6 px-6 pt-16 pb-20"
-        style={{
-          background: "linear-gradient(180deg, #041f1a 0%, #0a1e2e 40%, #0a0b0f 100%)",
-        }}
-      >
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-60 pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(0,212,170,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,170,0.07) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        {/* Floating orbs */}
-        <div
-          className="absolute rounded-full blur-[120px] pointer-events-none"
-          style={{
-            width: 500,
-            height: 500,
-            top: "-12%",
-            left: "-8%",
-            background: "rgba(0,212,170,0.15)",
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-[100px] pointer-events-none"
-          style={{
-            width: 400,
-            height: 400,
-            bottom: "-8%",
-            right: "-4%",
-            background: "rgba(0,102,255,0.12)",
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-[80px] pointer-events-none"
-          style={{
-            width: 300,
-            height: 300,
-            top: "35%",
-            right: "18%",
-            background: "rgba(0,212,170,0.08)",
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/5 text-sm">
-            <span
-              className="w-2 h-2 rounded-full bg-[var(--accent)]"
-              style={{ animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }}
-            />
-            <span className="text-[var(--accent)] font-medium">Live on Avalanche Fuji Testnet</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.03em] leading-[0.95] mb-6">
-            Meridian{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, #00d4aa 0%, #0088ff 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Protocol
-            </span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-3 leading-relaxed">
-            Onchain institutional credit infrastructure on Avalanche
-          </p>
-          <p className="text-sm text-zinc-500 max-w-xl mx-auto mb-10 leading-relaxed">
-            Structured credit vaults, credit default swap AMMs, and cross-chain margin, composed into a unified protocol with atomic operations, auto-compounding yield, and permissionless liquidation.
-          </p>
-
-          {/* Stats bar */}
-          <div className="flex justify-center gap-8 sm:gap-12 mb-10">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-[var(--accent)]">{stat.value}</div>
-                <div className="text-xs text-zinc-500 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/forge"
-              className="px-8 py-3.5 text-base font-semibold bg-[var(--accent)] text-black rounded-xl hover:opacity-90 transition-all shadow-lg shadow-[var(--accent)]/20 hover:shadow-[var(--accent)]/30 hover:scale-[1.02]"
-            >
-              Launch App
-            </Link>
-            <a
-              href="#walkthrough"
-              className="px-8 py-3.5 text-base font-medium text-zinc-300 rounded-xl border border-white/10 hover:border-white/25 hover:bg-white/5 transition-all"
-            >
-              Demo Walkthrough
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* ── Demo Walkthrough ── */}
-      <section id="walkthrough" className="pt-20 pb-4 max-w-3xl mx-auto">
-        <p className="text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
+      <section id="walkthrough" className="pt-20 pb-4 max-w-3xl mx-auto relative overflow-hidden">
+        {/* Spinning gradient background */}
+        <div className="spinning-gradient" style={{ animationDuration: "40s", opacity: 0.5 }} />
+        <div className="orb" style={{ width: 400, height: 400, top: "-10%", left: "-10%", background: "rgba(0,212,170,0.2)" }} />
+        <div className="orb" style={{ width: 300, height: 300, bottom: "5%", right: "-8%", background: "rgba(0,136,255,0.15)", animationDelay: "-8s" }} />
+        <p className="relative z-10 text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
           Demo Walkthrough
         </p>
-        <h2 className="text-center text-3xl md:text-4xl font-bold tracking-tight mb-3">
+        <h2 className="relative z-10 text-center text-3xl md:text-4xl font-bold tracking-tight mb-3">
           Follow the guided walkthrough
         </h2>
-        <p className="text-center text-sm text-zinc-500 mb-10 max-w-lg mx-auto">
+        <p className="relative z-10 text-center text-sm text-zinc-500 mb-10 max-w-lg mx-auto">
           Follow these steps to experience the full protocol. You&apos;ll need test AVAX for gas and MockUSDC (from our faucet) for transactions.
         </p>
 
-        <div className="space-y-4">
+        <div className="relative z-10 space-y-4">
           {walkthrough.map((item) => (
             <div
               key={item.step}
@@ -310,15 +196,11 @@ export default function Home() {
       </section>
 
       {/* ── Protocol Architecture ── */}
-      <section className="pt-20 pb-4 relative">
-        {/* Subtle dot grid background */}
-        <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(rgba(0,212,170,0.15) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
+      <section className="pt-20 pb-4 relative overflow-hidden">
+        {/* Dot grid + radial pulse */}
+        <div className="absolute inset-0 dot-grid-bg" />
+        <div className="radial-pulse" />
+        <div className="orb" style={{ width: 350, height: 350, top: "20%", right: "-12%", background: "rgba(0,212,170,0.18)", animationDelay: "-4s" }} />
 
         <div className="relative z-10">
           <p className="text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
@@ -366,15 +248,20 @@ export default function Home() {
       </section>
 
       {/* ── Core Protocol Layers ── */}
-      <section className="pt-20 pb-4">
-        <p className="text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
+      <section className="pt-20 pb-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/50 to-transparent pointer-events-none" />
+        <div className="spinning-gradient" style={{ animationDuration: "35s", opacity: 0.4 }} />
+        <div className="orb" style={{ width: 400, height: 400, bottom: "-15%", left: "-10%", background: "rgba(0,136,255,0.15)", animationDelay: "-10s" }} />
+        <div className="orb" style={{ width: 300, height: 300, top: "10%", right: "-8%", background: "rgba(0,212,170,0.15)", animationDelay: "-15s" }} />
+
+        <p className="relative z-10 text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
           Core Layers
         </p>
-        <h2 className="text-center text-3xl md:text-4xl font-bold tracking-tight mb-8">
+        <h2 className="relative z-10 text-center text-3xl md:text-4xl font-bold tracking-tight mb-8">
           Core Protocol Layers
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
           {layers.map((layer) => {
             const c = colorMap[layer.color];
             return (
@@ -416,15 +303,19 @@ export default function Home() {
       </section>
 
       {/* ── Composability Grid ── */}
-      <section className="pt-20 pb-4">
-        <p className="text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
+      <section className="pt-20 pb-4 relative overflow-hidden">
+        <div className="absolute inset-0 shimmer-bg" />
+        <div className="orb" style={{ width: 350, height: 350, top: "15%", left: "-10%", background: "rgba(0,212,170,0.15)", animationDelay: "-6s" }} />
+        <div className="orb" style={{ width: 250, height: 250, bottom: "10%", right: "-6%", background: "rgba(0,136,255,0.12)", animationDelay: "-12s" }} />
+
+        <p className="relative z-10 text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
           Composability
         </p>
-        <h2 className="text-center text-3xl md:text-4xl font-bold tracking-tight mb-8">
+        <h2 className="relative z-10 text-center text-3xl md:text-4xl font-bold tracking-tight mb-8">
           Composability & Automation
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {composability.map((item) => (
             <div
               key={item.name}
@@ -441,14 +332,17 @@ export default function Home() {
       </section>
 
       {/* ── Tech Stack ── */}
-      <section className="text-center pt-20 pb-4">
-        <p className="text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
+      <section className="text-center pt-20 pb-4 relative overflow-hidden">
+        <div className="absolute inset-0 dot-grid-bg" style={{ opacity: 0.4 }} />
+        <div className="orb" style={{ width: 300, height: 300, top: "-20%", right: "10%", background: "rgba(0,212,170,0.12)", animationDelay: "-3s" }} />
+
+        <p className="relative z-10 text-center text-[var(--accent)] text-sm font-semibold uppercase tracking-widest mb-3">
           Technology
         </p>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8">
+        <h2 className="relative z-10 text-3xl md:text-4xl font-bold tracking-tight mb-8">
           Built With
         </h2>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="relative z-10 flex flex-wrap justify-center gap-3">
           {[
             "Solidity 0.8.27",
             "Foundry",
@@ -472,7 +366,10 @@ export default function Home() {
       </section>
 
       {/* ── Footer CTA ── */}
-      <section className="text-center pt-20 pb-4">
+      <section className="text-center pt-20 pb-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/30 to-transparent pointer-events-none" />
+        <div className="orb" style={{ width: 350, height: 350, top: "0%", left: "20%", background: "rgba(0,212,170,0.12)", animationDelay: "-7s" }} />
+
         {/* Gradient separator */}
         <div
           className="h-px max-w-md mx-auto mb-10"
@@ -480,10 +377,10 @@ export default function Home() {
             background: "linear-gradient(90deg, transparent, rgba(0,212,170,0.4), transparent)",
           }}
         />
-        <p className="text-zinc-400 text-sm mb-6 max-w-md mx-auto leading-relaxed">
+        <p className="relative z-10 text-zinc-400 text-sm mb-6 max-w-md mx-auto leading-relaxed">
           Deployed on Avalanche Fuji Testnet. Connect your wallet to interact with live contracts.
         </p>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="relative z-10 flex flex-wrap justify-center gap-3">
           <Link
             href="/forge"
             className="px-6 py-2.5 bg-[var(--accent)] hover:opacity-90 text-black text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[var(--accent)]/20 hover:shadow-[var(--accent)]/30 hover:scale-[1.02]"
@@ -505,13 +402,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pulse animation keyframes */}
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-      `}</style>
     </div>
   );
 }
