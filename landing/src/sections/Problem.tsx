@@ -34,7 +34,7 @@ export default function Problem() {
   return (
     <section id="problem" className="section relative overflow-hidden">
       {/* Slow spinning gradient */}
-      <div className="spinning-gradient" />
+      <div className="spinning-gradient" style={{ opacity: 0.9 }} />
       <div className="relative z-10 max-w-6xl mx-auto">
         <FadeIn>
           <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-4 text-center">

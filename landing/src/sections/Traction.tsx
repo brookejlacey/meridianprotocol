@@ -18,7 +18,7 @@ const roadmap = [
 export default function Traction() {
   return (
     <section id="traction" className="section relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/15 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/35 to-transparent pointer-events-none" />
       <div className="spinning-gradient" style={{ animationDuration: "40s", opacity: 0.7 }} />
 
       <div className="relative z-10 max-w-5xl mx-auto">

@@ -40,8 +40,8 @@ body {
   66% { transform: translate(-20px, 20px) scale(0.95); }
 }
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
 }
 .orb {
   position: absolute;
@@ -54,8 +54,8 @@ body {
 /* ─── Grid background (static fine lines) ─── */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 212, 170, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 170, 0.08) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -65,7 +65,7 @@ body {
   50% { opacity: 0.8; }
 }
 .dot-grid-bg {
-  background-image: radial-gradient(circle, rgba(0, 212, 170, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 212, 170, 0.35) 1px, transparent 1px);
   background-size: 32px 32px;
   animation: dot-pulse 4s ease-in-out infinite;
 }
@@ -86,14 +86,14 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent,
-    rgba(0, 212, 170, 0.06) 60deg,
+    rgba(0, 212, 170, 0.15) 60deg,
     transparent 120deg,
-    rgba(0, 136, 255, 0.04) 200deg,
+    rgba(0, 136, 255, 0.10) 200deg,
     transparent 260deg,
-    rgba(0, 212, 170, 0.05) 320deg,
+    rgba(0, 212, 170, 0.12) 320deg,
     transparent 360deg
   );
-  filter: blur(60px);
+  filter: blur(40px);
   animation: spin-slow 30s linear infinite;
   pointer-events: none;
 }
@@ -111,7 +111,7 @@ body {
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.20) 0%, transparent 70%);
   animation: radial-pulse 8s ease-in-out infinite;
   pointer-events: none;
 }
@@ -125,9 +125,9 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(0, 212, 170, 0.03) 25%,
-    rgba(0, 136, 255, 0.03) 50%,
-    rgba(0, 212, 170, 0.03) 75%,
+    rgba(0, 212, 170, 0.08) 25%,
+    rgba(0, 136, 255, 0.08) 50%,
+    rgba(0, 212, 170, 0.08) 75%,
     transparent 100%
   );
   background-size: 200% 100%;

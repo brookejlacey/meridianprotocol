@@ -45,7 +45,7 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="section relative overflow-hidden">
       {/* Shimmer + grid */}
-      <div className="absolute inset-0 grid-bg opacity-40" />
+      <div className="absolute inset-0 grid-bg opacity-70" />
       <div className="absolute inset-0 shimmer-bg" />
       <div className="relative z-10 max-w-5xl mx-auto">
         <FadeIn>
