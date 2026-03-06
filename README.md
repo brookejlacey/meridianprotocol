@@ -1,6 +1,7 @@
 # Meridian Protocol
 
 Onchain institutional credit infrastructure on Avalanche. Six composable protocol layers spanning structured credit, credit default swaps, cross-chain margin, and AI-driven risk management — 35+ contracts, 692 tests, deployed on Fuji testnet.
+https://meridianprotocol.xyz
 
 ## Architecture
 
