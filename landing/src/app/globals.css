@@ -40,8 +40,8 @@ body {
   66% { transform: translate(-20px, 20px) scale(0.95); }
 }
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1.0; }
 }
 .orb {
   position: absolute;
@@ -54,18 +54,18 @@ body {
 /* ─── Grid background (static fine lines) ─── */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0, 212, 170, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 170, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(0, 212, 170, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 170, 0.15) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 /* ─── Dot grid background (pulsing) ─── */
 @keyframes dot-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1.0; }
 }
 .dot-grid-bg {
-  background-image: radial-gradient(circle, rgba(0, 212, 170, 0.35) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 212, 170, 0.5) 1.5px, transparent 1.5px);
   background-size: 32px 32px;
   animation: dot-pulse 4s ease-in-out infinite;
 }
@@ -86,14 +86,14 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent,
-    rgba(0, 212, 170, 0.15) 60deg,
+    rgba(0, 212, 170, 0.25) 60deg,
     transparent 120deg,
-    rgba(0, 136, 255, 0.10) 200deg,
+    rgba(0, 136, 255, 0.18) 200deg,
     transparent 260deg,
-    rgba(0, 212, 170, 0.12) 320deg,
+    rgba(0, 212, 170, 0.22) 320deg,
     transparent 360deg
   );
-  filter: blur(40px);
+  filter: blur(30px);
   animation: spin-slow 30s linear infinite;
   pointer-events: none;
 }
@@ -106,12 +106,12 @@ body {
 }
 .radial-pulse {
   position: absolute;
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.20) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.35) 0%, transparent 70%);
   animation: radial-pulse 8s ease-in-out infinite;
   pointer-events: none;
 }
@@ -125,9 +125,9 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(0, 212, 170, 0.08) 25%,
-    rgba(0, 136, 255, 0.08) 50%,
-    rgba(0, 212, 170, 0.08) 75%,
+    rgba(0, 212, 170, 0.15) 25%,
+    rgba(0, 136, 255, 0.15) 50%,
+    rgba(0, 212, 170, 0.15) 75%,
     transparent 100%
   );
   background-size: 200% 100%;

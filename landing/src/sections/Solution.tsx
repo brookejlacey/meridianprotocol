@@ -149,10 +149,10 @@ export default function Solution() {
   return (
     <section id="solution" className="section relative overflow-hidden">
       {/* Radial pulse + gradient wash */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#041f1a]/50 to-transparent pointer-events-none" />
       <div className="radial-pulse" />
-      <div className="orb w-[400px] h-[400px] bg-accent/20 top-[10%] right-[-10%]" style={{ animationDelay: "-5s" }} />
-      <div className="orb w-[300px] h-[300px] bg-[#0088ff]/20 bottom-[10%] left-[-8%]" style={{ animationDelay: "-12s" }} />
+      <div className="orb w-[400px] h-[400px] bg-accent/30 top-[10%] right-[-10%]" style={{ animationDelay: "-5s" }} />
+      <div className="orb w-[300px] h-[300px] bg-[#0088ff]/30 bottom-[10%] left-[-8%]" style={{ animationDelay: "-12s" }} />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <FadeIn>

@@ -16,7 +16,7 @@ export default function Hero() {
       </div>
 
       {/* Grid overlay */}
-      <div className="absolute inset-0 grid-bg opacity-60" />
+      <div className="absolute inset-0 grid-bg opacity-80" />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl px-6 pt-24 pb-16">

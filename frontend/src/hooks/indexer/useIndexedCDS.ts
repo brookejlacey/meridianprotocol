@@ -90,3 +90,12 @@ export function useIndexedCDS() {
     staleTime: Infinity,
   });
 }
+
+export function useIndexedCDSDetail(cdsId: string | undefined) {
+  return useQuery({
+    queryKey: ["static", "cds", cdsId],
+    queryFn: () => DEPLOYED_CDS.find((c) => c.cdsId === cdsId) ?? null,
+    enabled: !!cdsId,
+    staleTime: Infinity,
+  });
+}

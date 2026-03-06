@@ -41,7 +41,7 @@ const team = [
 export default function Team() {
   return (
     <section id="team" className="section relative overflow-hidden">
-      <div className="absolute inset-0 dot-grid-bg opacity-80" />
+      <div className="absolute inset-0 dot-grid-bg" />
       <div className="relative z-10 max-w-5xl mx-auto">
         <FadeIn>
           <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-4 text-center">
