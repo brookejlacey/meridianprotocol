@@ -4,7 +4,7 @@ import { use, useState } from "react";
 import { type Address, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 import { useIndexedPoolDetail } from "@/hooks/indexer/useIndexedPools";
-import { useApproveToken } from "@/hooks/useApproveToken";
+import { useApproveToken, useTokenAllowance } from "@/hooks/useApproveToken";
 import { usePoolDeposit, usePoolWithdraw, usePoolBuyProtection } from "@/hooks/useCDSPool";
 import { formatAmount, formatWadPercent, shortenAddress, formatDate } from "@/lib/utils";
 import Link from "next/link";
@@ -59,32 +59,39 @@ function PoolDetailView({ pool }: { pool: NonNullable<ReturnType<typeof useIndex
 
   // Write hooks
   const { approve, isPending: isApproving } = useApproveToken();
+  const { data: allowance } = useTokenAllowance(collateralToken, userAddress, poolAddress);
   const { deposit, isPending: isDepositing, isConfirming: isConfirmingDeposit } = usePoolDeposit();
   const { withdraw, isPending: isWithdrawing, isConfirming: isConfirmingWithdraw } = usePoolWithdraw();
   const { buyProtection, isPending: isBuying, isConfirming: isConfirmingBuy } = usePoolBuyProtection();
 
-  const handleDeposit = async () => {
+  const depositParsed = depositAmount ? parseUnits(depositAmount, 18) : 0n;
+  const protectionParsed = protectionNotional ? parseUnits(protectionNotional, 18) : 0n;
+  const needsApprovalDeposit = allowance !== undefined && depositParsed > allowance;
+  const needsApprovalProtection = allowance !== undefined && protectionParsed > allowance;
+
+  const handleDeposit = () => {
     if (!depositAmount) return;
-    const amount = parseUnits(depositAmount, 18);
-    await approve(collateralToken, poolAddress);
-    deposit(poolAddress, amount);
-    setDepositAmount("");
+    if (needsApprovalDeposit) {
+      approve(collateralToken, poolAddress);
+      return;
+    }
+    deposit(poolAddress, depositParsed);
   };
 
-  const handleWithdraw = async () => {
+  const handleWithdraw = () => {
     if (!withdrawShares) return;
     const shares = parseUnits(withdrawShares, 18);
     withdraw(poolAddress, shares);
-    setWithdrawShares("");
   };
 
-  const handleBuyProtection = async () => {
+  const handleBuyProtection = () => {
     if (!protectionNotional) return;
-    const notional = parseUnits(protectionNotional, 18);
-    const maxPremium = notional / 10n; // rough estimate for slippage
-    await approve(collateralToken, poolAddress);
-    buyProtection(poolAddress, notional, maxPremium);
-    setProtectionNotional("");
+    if (needsApprovalProtection) {
+      approve(collateralToken, poolAddress);
+      return;
+    }
+    const maxPremium = protectionParsed / 10n;
+    buyProtection(poolAddress, protectionParsed, maxPremium);
   };
 
   return (
@@ -163,7 +170,7 @@ function PoolDetailView({ pool }: { pool: NonNullable<ReturnType<typeof useIndex
             disabled={!isActive || !depositAmount || isDepositing || isConfirmingDeposit || isApproving}
             className="w-full px-4 py-2 rounded bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
           >
-            {isApproving ? "Approving..." : isDepositing ? "Depositing..." : isConfirmingDeposit ? "Confirming..." : "Deposit"}
+            {isApproving ? "Approving..." : isDepositing ? "Depositing..." : isConfirmingDeposit ? "Confirming..." : needsApprovalDeposit ? "Approve USDC" : "Deposit"}
           </button>
         </div>
 
@@ -203,7 +210,7 @@ function PoolDetailView({ pool }: { pool: NonNullable<ReturnType<typeof useIndex
             disabled={!protectionNotional || isBuying || isConfirmingBuy || isApproving}
             className="w-full px-4 py-2 rounded bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
           >
-            {isApproving ? "Approving..." : isBuying ? "Buying..." : isConfirmingBuy ? "Confirming..." : "Buy Protection"}
+            {isApproving ? "Approving..." : isBuying ? "Buying..." : isConfirmingBuy ? "Confirming..." : needsApprovalProtection ? "Approve USDC" : "Buy Protection"}
           </button>
         </div>
       )}

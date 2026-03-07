@@ -27,11 +27,11 @@ export function useTokenBalance(token: Address | undefined, account: Address | u
 }
 
 export function useApproveToken() {
-  const { writeContract, data: hash, isPending } = useWriteContract();
+  const { writeContractAsync, data: hash, isPending } = useWriteContract();
   const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
-  function approve(token: Address, spender: Address) {
-    writeContract({
+  async function approve(token: Address, spender: Address) {
+    await writeContractAsync({
       address: token,
       abi: ERC20Abi,
       functionName: "approve",

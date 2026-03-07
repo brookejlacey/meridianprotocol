@@ -20,7 +20,7 @@ export interface IndexedPool {
 // Hardcoded pool data for demo — showcases CDS AMM pool layer
 const DEPLOYED_POOLS: IndexedPool[] = [
   {
-    id: "0xAA1122334455667788990011223344556677AABB",
+    id: "0x836E1a9ed6700A314433642E3052B6C5AA2251cE",
     poolId: "0",
     referenceAsset: "0x658b99C350CfEDd8Acf33dB6782Ca99e44e98327",
     totalLiquidity: "2000000000000000000000000",
