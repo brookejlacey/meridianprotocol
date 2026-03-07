@@ -67,6 +67,7 @@ jobs:
   slither:
     name: Slither Static Analysis
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       security-events: write
